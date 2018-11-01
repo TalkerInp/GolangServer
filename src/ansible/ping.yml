@@ -1,0 +1,10 @@
+---
+- name:  hosts Info 
+  hosts: web
+  become: all
+
+
+  tasks:
+  - name: Take information about disk
+    ping: 
+

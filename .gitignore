@@ -1,0 +1,6 @@
+#ignore
+src/github.com
+src/golang.org
+src/gopkg.in
+src/id_rsa
+src/id_rsa.pub

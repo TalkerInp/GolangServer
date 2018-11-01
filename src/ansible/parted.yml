@@ -1,0 +1,32 @@
+---
+- name: Partitioning
+  become: all
+  user: root
+  hosts: web
+  vars:
+      vardevice: "{{ lookup('etcd', 'vardevice', version='v2', url='http://192.168.2.229:2379') }}"
+      varnumber:  "{{ lookup('etcd', 'varnumber', version='v2', url='http://192.168.2.229:2379') }}"
+      varlable: "{{ lookup('etcd', 'varlable', version='v2', url='http://192.168.2.229:2379') }}"
+      varstate: "{{ lookup('etcd', 'varstate', version='v2', url='http://192.168.2.229:2379') }}"
+      varpart_start: "{{ lookup('etcd', 'varpart_start', version='v2', url='http://192.168.2.229:2379') }}"
+      varpart_end: "{{ lookup('etcd', 'varpart_end', version='v2', url='http://192.168.2.229:2379') }}"
+
+
+  tasks: 
+  - name: Check vardevice
+    debug: msg="{{ lookup('vars', 'vardevice') }}" 
+  - name: Check varnumber
+    debug: msg="{{ lookup('vars', 'varnumber') }}"
+  - name: Check varlable
+    debug: msg="{{ lookup('vars', 'varlable') }}"
+  - name: Check varstate
+    debug: msg="{{ lookup('vars', 'varstate') }}"
+  - name: Create partition
+    parted:
+      device: /dev/"{{ lookup('vars', 'vardevice')}}"
+      number: "{{ lookup('vars','varnumber') | int }}"
+      label: "{{ lookup('vars', 'varlable')}}"
+      flags: [lvm]
+      part_start: "{{ lookup('vars', 'varpart_start')}}"
+      part_end: "{{ lookup('vars', 'varpart_end')}}"
+      state: "{{ lookup('vars', 'varstate')}}"

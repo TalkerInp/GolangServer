@@ -1,0 +1,11 @@
+---
+- name: Check etcd cluster
+  hosts: web
+  become: all
+  user: root
+
+  tasks:
+  - name: Check
+    debug: msg="{{ lookup('vars', 'vardevice')}}"
+    vars:
+      vardevice: "{{ lookup('etcd', 'vardevice', version='v2', url='http://192.168.2.229:2379') }}"
